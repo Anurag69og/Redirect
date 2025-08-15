@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arun's Web Navigator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for background and button effects */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0e7f1, #c1cbd7, #e8edf4); /* Very light, professional cool tones */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden; /* Prevent scrollbar from background */
+        }
+
+        /* Container for the app to add some padding and centering */
+        .app-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Opaque white background for professional feel */
+            backdrop-filter: blur(12px); /* Slightly stronger blur */
+            border-radius: 24px; /* More rounded corners */
+            padding: 40px; /* More padding */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); /* Softer, deeper shadow */
+            text-align: center;
+            max-width: 960px; /* Slightly wider */
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Slightly larger buttons */
+            gap: 20px; /* Slightly increased gap */
+            margin-top: 40px; /* More space from title */
+        }
+
+        /* Specific button styling with hover and active effects */
+        .website-button {
+            display: flex; /* Use flexbox for logo and text alignment */
+            flex-direction: column; /* Stack logo above text */
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            padding: 16px 10px; /* More padding */
+            border-radius: 16px; /* Even more rounded corners */
+            font-weight: 600; /* Bolder text */
+            font-size: 1.05em; /* Slightly larger text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Soft professional shadow */
+            border: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            min-height: 100px; /* Ensure consistent button height */
+        }
+
+        .website-button .logo-svg {
+            width: 40px; /* Size of SVG logo */
+            height: 40px; /* Size of SVG logo */
+            margin-bottom: 8px; /* Space between logo and text */
+            line-height: 1; /* Prevent extra space above/below */
+        }
+        
+        /* Ensure SVG fills with current color from JS */
+        .website-button .logo-svg svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Styling for solid color logos (like Telegram and Discord) */
+        .website-button .solid-logo {
+            font-size: 2.2em; /* Adjust size for emoji/text based logos */
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .website-button .text {
+            font-weight: 600; /* Bolder text */
+            font-size: 0.9em; /* Adjusted text size */
+            color: inherit; /* Inherit color from button's dynamic text color */
+        }
+
+        .website-button:hover {
+            transform: translateY(-6px) scale(1.03); /* More pronounced lift and enlarge */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            filter: brightness(1.15); /* More noticeable brightness */
+        }
+
+        .website-button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            filter: brightness(0.9);
+        }
+
+        /* Ripple effect for buttons */
+        .website-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6); /* Clearer ripple */
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0) translate(-50%, -50%);
+            transition: width 0.5s ease-out, height 0.5s ease-out, opacity 0.5s ease-out;
+            pointer-events: none; /* Ensure clicks pass through ripple */
+        }
+
+        .website-button:active::after {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+            transition: 0s;
+        }
+
+        /* Text color for header and paragraph */
+        .app-container h1, .app-container p {
+            color: #333; /* Darker text for readability on light background */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 25px;
+                border-radius: 16px;
+            }
+            .button-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 15px;
+            }
+            .website-button {
+                padding: 12px 8px;
+                min-height: 90px;
+                font-size: 0.95em;
+                border-radius: 12px;
+            }
+            .website-button .logo-svg {
+                width: 35px;
+                height: 35px;
+                margin-bottom: 4px;
+            }
+            .website-button .solid-logo {
+                font-size: 1.8em;
+            }
+            .website-button .text {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1 class="text-3xl md:text-4xl font-bold mb-6 drop-shadow-sm">Arun's Web Navigator</h1>
+        <p class="text-lg text-opacity-80 mb-8">Click any platform to launch it in a new tab.</p>
+
+        <div class="button-grid" id="websiteButtonGrid">
+            <!-- Buttons will be dynamically loaded here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Data for website buttons with vibrant colors and SVG logos
+        const websiteData = {
+            youtube: { title: "YouTube", url: "https://www.youtube.com/", color: "#FF0000", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            facebook: { title: "Facebook", url: "https://www.facebook.com/", color: "#1877F2", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.35 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.35 504 379.78 504 256z"/></svg>' },
+            instagram: { title: "Instagram", url: "https://www.instagram.com/", color: "#E1306C", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 148.8c-72.3 0-131 58.7-131 131s58.7 131 131 131 131-58.7 131-131-58.7-131-131-131zm0 213.2c-45.7 0-82.9-37.2-82.9-82.9s37.2-82.9 82.9-82.9 82.9 37.2 82.9 82.9-37.2 82.9-82.9 82.9zM362.7 165c.6-1.5 1.1-3.1 1.6-4.7L366 156c-1.1-3.6-2.5-7.1-4.2-10.4-3.5-7-8.1-13.3-13.7-18.9-5.6-5.6-11.9-10.2-18.9-13.7-3.3-1.7-6.8-3.1-10.4-4.2l-4.3-1.6c-1.6-.5-3.2-1-4.7-1.6-1.5-.6-3-1-4.5-1.4-1.6-.4-3.2-.7-4.8-.8-1.6-.1-3.2-.1-4.8-.1h-16.7c-17.7 0-32 14.3-32 32v16.7c0 1.6.01 3.2.06 4.8.07 1.6.17 3.2.3 4.8.14 1.6.29 3.1.47 4.7.18 1.6.38 3.2.6 4.7.23 1.6.47 3.1.75 4.7.28 1.6.59 3.2.9 4.7.31 1.6.65 3.1 1.02 4.7.37 1.6.76 3.2 1.17 4.7l.68 2.7c.36 1.4.74 2.8 1.14 4.1.4 1.3.82 2.7 1.27 4 .45 1.4.91 2.7 1.39 4 .48 1.3.99 2.7 1.52 4l.87 2.6c.55 1.6 1.13 3.1 1.73 4.6l.87 2.1c.6 1.4 1.24 2.8 1.9 4.2.66 1.4 1.35 2.8 2.07 4.1.72 1.3 1.48 2.6 2.27 3.8.79 1.2 1.62 2.4 2.49 3.6l1.35 1.8c.88 1.1 1.8 2.2 2.76 3.2.96 1 1.96 2 3 2.9l1.6 1.4c1.07.9 2.19 1.8 3.34 2.6.56.4 1.13.8 1.71 1.2.58.4 1.17.8 1.77 1.2.6.4 1.22.8 1.84 1.1.62.3 1.25.7 1.89.9.64.3 1.29.5 1.95.7.66.2 1.32.3 1.98.4.66.1 1.33.1 2 .1.67 0 1.34 0 2-.01l.83-.01c17.7-.09 32.09-14.49 32.09-32.26V172.9z"/></svg>' },
+            x: { title: "X (Twitter)", url: "https://x.com/", color: "#1DA1F2", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H392.2L240.7 272.8 117.1 464H31.6l152.8-212.4L31.6 48H121L240.7 203.4 389.2 48zM364.7 427.6h38.2L142.1 84.4H100L364.7 427.6z"/></svg>' },
+            linkedin: { title: "LinkedIn", url: "https://www.linkedin.com/", color: "#0A66C2", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H32C14.33 32 0 46.33 0 64v384c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zM128 416H64V192h64v224zm0-256H64V128h64v32zM384 416h-64v-93.5c0-22.18-17.82-32.5-32-32.5c-15.02 0-22 10.22-22 32.5V416h-64V192h64v27.5c10.33-11.83 25.04-27.5 54-27.5c39.69 0 72 37.36 72 88.5V416z"/></svg>' },
+            tiktok: { title: "TikTok", url: "https://www.tiktok.com/", color: "#000000", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 209.91a210.06 210.06 0 0 1 -122.77-39.25v178.71a164.73 164.73 0 1 1 -164.73-164.73c0-2.64.02-5.29.08-7.93C158.84 205.15 190 221 211.19 221c.31 0 .61 0 .92-.01A206.59 206.59 0 0 0 448 209.91z"/></svg>' },
+            pinterest: { title: "Pinterest", url: "https://www.pinterest.com/", color: "#E60023", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M496 256c0 137-111 248-248 248S0 393 0 256 111 8 248 8s248 111 248 248zM176.7 348.4c-3.1-49.9 8.2-95.2 34.6-127.8 19.4-24.7 44-39.9 66.5-51.5 13.9-7.3 25.8-13.8 32-15.6 2.2-.6 3.6-1.5 3.3-3.6-.4-2.5-1.5-3.3-4.2-3.8-11.5-2.2-22.3-1-39.5 2.1-40.8 7.3-73.7 28-98.7 67.2-25.5 40.5-34.1 79.5-33.8 126.8 0 19.3 5.4 34.2 14.1 46.1 8.7 11.9 20.3 17.8 35.1 17.8 15.6 0 26.5-7.7 32.7-22.9 6.2-15.1 8.8-37.3 8.8-66.2 0-37.1-13.3-64.7-39.7-82.9-26.3-18.2-66.8-26.3-121.7-26.3-21.3 0-41 1.7-58.7 5-17.7 3.3-31 7.7-40 13.3s-14.7 11.4-17.5 16.5c-2.8 5.1-3.6 10.3-2.6 15.6 1 5.3 4.2 10 9.7 14.2 5.5 4.2 12.3 7.8 20.4 10.8s15.3 4.5 20.8 4.5c4.6 0 8.6-1.5 12-4.5s5.9-6.4 7.6-9.7c1.7-3.3 2.6-7.1 2.6-11.4 0-5.8-.8-10.4-2.5-13.8-1.7-3.3-4.7-5.5-8.9-6.6s-9-1.5-14.2-.6c-5.1.9-9.5 2.8-13.2 5.8-3.7 3-6.5 6.7-8.5 11.1-2 4.4-2.8 9.3-2.5 14.7.4 5.4 1.7 10.3 4.1 14.7 2.4 4.4 5.8 8 10.2 10.8s9.3 4 14.8 4c9.9 0 20.6-2.6 32.2-7.9 11.6-5.3 21.6-11.8 30-19.5 8.4-7.7 14.8-16.6 19.2-26.7 4.4-10.1 6.6-21.2 6.6-33.4 0-16.7-4.1-32.9-12.4-48.4-8.3-15.6-20.6-28.7-36.9-39.5-16.3-10.8-35.3-17-56.9-18.8l-1.6-.1-1.6-.1c-1.6-.1-3.2-.1-4.8 0-1.6 0-3.2.1-4.8.2-1.6.1-3.2.3-4.8.5-1.6.2-3.2.4-4.8.7-1.6.3-3.2.6-4.8.9-1.6.4-3.2.7-4.8 1.2-1.6.4-3.2.8-4.8 1.3-1.6.5-3.2 1-4.8 1.6-1.6.6-3.2 1.2-4.8 1.9-1.6.7-3.2 1.4-4.8 2.2-1.6.8-3.2 1.6-4.8 2.5-1.6.9-3.2 1.8-4.8 2.8-1.6 1-3.2 2-4.8 3.1-1.6 1.1-3.2 2.2-4.8 3.4-1.6 1.2-3.2 2.5-4.8 3.8-1.6 1.3-3.2 2.6-4.8 4-1.6 1.4-3.2 2.8-4.8 4.3-1.6 1.5-3.2 3-4.8 4.6-1.6 1.6-3.2 3.2-4.8 4.9-1.6 1.7-3.2 3.4-4.8 5.2-1.6 1.8-3.2 3.6-4.8 5.5-1.6 1.9-3.2 3.8-4.8 5.8-1.6 2-3.2 4-4.8 6.1-1.6 2.1-3.2 4.2-4.8 6.4-1.6 2.2-3.2 4.5-4.8 6.8-1.6 2.3-3.2 4.6-4.8 7-1.6 2.4-3.2 4.8-4.8 7.3-1.6 2.5-3.2 5-4.8 7.6-1.6 2.6-3.2 5.2-4.8 7.8-1.6 2.6-3.2 5.3-4.8 8.1-1.6 2.7-3.2 5.5-4.8 8.3-1.6 2.8-3.2 5.7-4.8 8.6-1.6 2.9-3.2 5.9-4.8 8.8-1.6 3-3.2 6-4.8 9.1-1.6 3.1-3.2 6.2-4.8 9.4-1.6 3.2-3.2 6.4-4.8 9.7-1.6 3.3-3.2 6.6-4.8 10-1.6 3.4-3.2 6.7-4.8 10.1-1.6 3.4-3.2 6.9-4.8 10.3-1.6 3.4-3.2 7-4.8 10.5-1.6 3.5-3.2 7.1-4.8 10.7-1.6 3.6-3.2 7.2-4.8 10.9-1.6 3.7-3.2 7.3-4.8 11.1-1.6 3.8-3.2 7.4-4.8 11.3-1.6 3.9-3.2 7.5-4.8 11.4-1.6 4-3.2 7.6-4.8 11.6-1.6 4.1-3.2 7.7-4.8 11.8-1.6 4.1-3.2 7.8-4.8 12-.7.2-1.4.3-2.1.5-26.6 8.3-44 32.5-44 59.9c0 14.8 5.7 27.2 16.5 37.1 10.8 9.9 24.3 14.8 40.4 14.8 17 0 31.8-6.1 44.4-18.4 12.6-12.3 18.9-28.7 18.9-49.2 0-21.7-8.1-40.4-24.2-56.1-16.2-15.7-38.1-23.5-65.7-23.5-9.3 0-18.3.9-27.1 2.7-8.8 1.8-17 .4-24.6-4.4s-13.4-12-16.2-20.9c-2.8-8.9-3.6-18.7-2.7-28.6.9-9.9 3.5-19.4 7.9-28.4 4.4-9 10.4-17 18.1-24.1 7.7-7.1 16.8-12.7 27.4-16.7 10.6-4 22-6 34.1-6 10.9 0 21.6 1.4 32.1 4.2 10.5 2.8 20.3 6.9 29.3 12.3 9 5.4 17.1 11.9 24.4 19.5 7.3 7.6 13.5 16.2 18.6 25.8 5.1 9.6 9.1 20.2 12 31.8 2.9 11.6 4.4 24.1 4.4 37.5 0 20.2-3 38.6-9.1 55.2-6.1 16.6-14.7 30.7-25.9 42.4-11.2 11.7-24.5 20.8-39.9 27.3-15.4 6.5-32.3 9.7-50.6 9.7-27.2 0-49.8-7.9-67.8-23.8-18-15.9-27-38.1-27-66.5z"/></svg>' },
+            snapchat: { title: "Snapchat", url: "https://www.snapchat.com/", color: "#FFFC00", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 209.91a210.06 210.06 0 0 1 -122.77-39.25v178.71a164.73 164.73 0 1 1 -164.73-164.73c0-2.64.02-5.29.08-7.93C158.84 205.15 190 221 211.19 221c.31 0 .61 0 .92-.01A206.59 206.59 0 0 0 448 209.91z"/></svg>' },
+            zoom: { title: "Zoom", url: "https://zoom.us/", color: "#2D8CFF", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M375.9 146.4c-2.3-12.7-14.3-21.7-27.2-19.4L208 152.1V96c0-17.7-14.3-32-32-32H32C14.3 64 0 78.3 0 96v320c0 17.7 14.3 32 32 32h144c17.7 0 32-14.3 32-32v-56.1l140.7 25.1c12.9 2.3 24.9-6.7 27.2-19.4l48-264c2.3-12.7-6.7-24.7-19.4-27.2L375.9 146.4zM176 384H64V128h112v256zM464 336L416 360 208 152 256 128l208 208z"/></svg>' },
+            whatsapp: { title: "WhatsApp", url: "https://www.whatsapp.com/", color: "#25D366", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M380.9 97.1C339.4 55.6 283.8 32 224 32S108.6 55.6 67.1 97.1 32 190.2 32 256c0 51.7 15.2 98.8 41.6 141.6L32 480l110.3-29.5c41.3 24 88.5 36.4 135.7 36.4C339.4 480 395 456.4 436.5 414.9S480 321.8 480 256c0-51.7-15.2-98.8-41.6-141.6zM224 448c-36.8 0-71.2-10.6-101.5-30.6L112 408l-31.6 8.4c-11.6 3.1-23.7 4.7-36.4 4.7-41.2 0-74.8-33.6-74.8-74.8 0-11.6 3.1-23.7 8.4-36.4L72 224l8.4-31.6c-20-30.3-30.6-64.7-30.6-101.5 0-41.2 33.6-74.8 74.8-74.8 36.8 0 71.2 10.6 101.5 30.6L224 112l31.6-8.4c11.6-3.1 23.7-4.7 36.4-4.7 41.2 0 74.8 33.6 74.8 74.8 0 11.6-3.1 23.7-8.4 36.4L408 224l-8.4 31.6c20 30.3 30.6 64.7 30.6 101.5 0 41.2-33.6 74.8-74.8 74.8-36.8 0-71.2-10.6-101.5-30.6L224 448z"/></svg>' },
+            telegram: { title: "Telegram", url: "https://telegram.org/", color: "#0088CC", icon: '✈️' }, // Solid color, using emoji for simple icon
+            discord: { title: "Discord", url: "https://discord.com/", color: "#5865F2", icon: '🎮' }, // Solid color, using emoji for simple icon
+            twitch: { title: "Twitch", url: "https://www.twitch.tv/", color: "#9146FF", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M391.2 103.5c-4.6-1.5-9.3-2.5-14.1-3.1-12.7-1.5-25.7-2.3-38.9-2.3-43.2 0-84.3 12.3-119.8 36.8-35.5 24.5-62.8 58.7-81.8 99.8-19 41.1-28.5 87.3-28.5 138.8 0 29.5 5.5 57.5 16.5 83.9 11 26.4 26.5 49.6 46.5 69.6 20 20 43.2 35.5 67.8 46.5 24.6 11 50.6 16.5 77.9 16.5 43.2 0 84.3-12.3 119.8-36.8 35.5-24.5 62.8-58.7 81.8-99.8 19-41.1 28.5-87.3 28.5-138.8 0-29.5-5.5-57.5-16.5-83.9-11-26.4-26.5-49.6-46.5-69.6-20-20-43.2-35.5-67.8-46.5zM256 32c141.4 0 256 114.6 256 256s-114.6 256-256 256S0 397.4 0 256 114.6 32 256 32zm-64 192c0-17.7 14.3-32 32-32s32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32v-64zm128 0c0-17.7 14.3-32 32-32s32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32v-64z"/></svg>' },
+            netflix: { title: "Netflix", url: "https://www.netflix.com/", color: "#E50914", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 256c0-106.5-86.5-192-192-192S64 149.5 64 256s86.5 192 192 192 192-86.5 192-192zm-192 160c-88.4 0-160-71.6-160-160s71.6-160 160-160 160 71.6 160 160-71.6 160-160 160z"/></svg>' },
+            spotify: { title: "Spotify", url: "https://www.spotify.com/", color: "#1DB954", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm96 352c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80zm-160 0c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"/></svg>' },
+            amazon: { title: "Amazon", url: "https://www.amazon.com/", color: "#FF9900", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            ebay: { title: "eBay", url: "https://www.ebay.com/", color: "#E53238", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            wikipedia: { title: "Wikipedia", url: "https://www.wikipedia.org/", color: "#F8F9FA", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            google: { title: "Google", url: "https://www.google.com/", color: "#4285F4", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            gmail: { title: "Gmail", url: "https://mail.google.com/", color: "#EA4335", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            googledrive: { title: "Drive", url: "https://drive.google.com/", color: "#4285F4", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            microsoftteams: { title: "MS Teams", url: "https://www.microsoft.com/en-us/microsoft-teams/", color: "#6264A7", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            slack: { title: "Slack", url: "https://slack.com/", color: "#4A154B", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            github: { title: "GitHub", url: "https://github.com/", color: "#181717", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            stackoverflow: { title: "Stack Overflow", url: "https://stackoverflow.com/", color: "#F48024", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            medium: { title: "Medium", url: "https://medium.com/", color: "#02B875", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            quora: { title: "Quora", url: "https://www.quora.com/", color: "#B92B27", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            canva: { title: "Canva", url: "https://www.canva.com/", color: "#00C4CC", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            shopify: { title: "Shopify", url: "https://www.shopify.com/", color: "#96BF48", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            etsy: { title: "Etsy", url: "https://www.etsy.com/", color: "#F56400", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            asana: { title: "Asana", url: "https://asana.com/", color: "#5C67EF", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            trello: { title: "Trello", url: "https://trello.com/", color: "#0079BF", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            evernote: { title: "Evernote", url: "https://evernote.com/", color: "#2DB661", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            vimeo: { title: "Vimeo", url: "https://vimeo.com/", color: "#1AB7EA", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            soundcloud: { title: "SoundCloud", url: "https://soundcloud.com/", color: "#FF8800", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            duolingo: { title: "Duolingo", url: "https://www.duolingo.com/", color: "#58CC02", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            coursera: { title: "Coursera", url: "https://www.coursera.org/", color: "#2A73CC", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' },
+            udemy: { title: "Udemy", url: "https://www.udemy.com/", color: "#EC5252", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.146-48.437-48.427C442.21 64 288 64 288 64S133.79 64 74.382 75.656c-23.65 6.281-42.147 24.787-48.428 48.437C16 173.79 16 256 16 256s0 82.21 10.394 124.083c6.281 23.65 24.787 42.146 48.437 48.427C133.79 448 288 448 288 448s154.21 0 213.618-11.656c23.65-6.281 42.147-24.787 48.428-48.437C560 338.21 560 256 560 256s0-82.21-10.345-124.083zM288 350c-39.754 0-72-32.246-72-72s32.246-72 72-72 72 32.246 72 72-32.246 72-72 72zm0-104c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32z"/></svg>' }
+        };
+
+        // Get DOM elements
+        const websiteButtonGrid = document.getElementById('websiteButtonGrid');
+
+        // Dynamically create buttons based on websiteData
+        function createWebsiteButtons() {
+            for (const key in websiteData) {
+                if (websiteData.hasOwnProperty(key)) {
+                    const button = document.createElement('button');
+                    button.classList.add('website-button');
+                    
+                    // Create logo element based on whether it's SVG or solid (emoji)
+                    if (websiteData[key].icon.startsWith('<svg')) {
+                        const logoDiv = document.createElement('div');
+                        logoDiv.classList.add('logo-svg');
+                        logoDiv.innerHTML = websiteData[key].icon;
+                        button.appendChild(logoDiv);
+                    } else if (websiteData[key].icon) {
+                        const logoSpan = document.createElement('span');
+                        logoSpan.classList.add('solid-logo');
+                        logoSpan.textContent = websiteData[key].icon;
+                        button.appendChild(logoSpan);
+                    }
+
+                    // Create text span
+                    const textSpan = document.createElement('span');
+                    textSpan.classList.add('text');
+                    textSpan.textContent = websiteData[key].title;
+                    button.appendChild(textSpan);
+                    
+                    // Apply unique vibrant color to each button
+                    const primaryColor = websiteData[key].color;
+                    const lighterColor = adjustBrightness(primaryColor, 1.1); // Slightly lighter for gradient start
+                    const darkerColor = adjustBrightness(primaryColor, 0.9);  // Slightly darker for gradient end
+                    button.style.background = `linear-gradient(145deg, ${lighterColor}, ${darkerColor})`;
+
+                    // Set text color based on background luminance for readability
+                    button.style.color = getContrastTextColor(primaryColor);
+
+                    // Direct redirection on click
+                    button.addEventListener('click', () => {
+                        window.open(websiteData[key].url, '_blank'); // Open URL in a new tab
+                    });
+                    websiteButtonGrid.appendChild(button);
+                }
+            }
+        }
+
+        // Helper function to adjust color brightness
+        function adjustBrightness(hex, factor) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+
+            const newR = Math.min(255, Math.max(0, Math.round(r * factor)));
+            const newG = Math.min(255, Math.max(0, Math.round(g * factor)));
+            const newB = Math.min(255, Math.max(0, Math.round(b * factor)));
+
+            return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+        }
+
+        // Helper function to get contrasting text color (white or dark gray)
+        function getContrastTextColor(hexColor) {
+            // Convert hex to RGB
+            const r = parseInt(hexColor.slice(1, 3), 16);
+            const g = parseInt(hexColor.slice(3, 5), 16);
+            const b = parseInt(hexColor.slice(5, 7), 16);
+
+            // Calculate luminance (perceived brightness)
+            // Formula: (0.299*R + 0.587*G + 0.114*B) / 255
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            // Use white text for dark colors, a dark gray for light colors
+            return luminance > 0.5 ? '#333333' : '#FFFFFF';
+        }
+
+        // Initialize buttons on page load
+        document.addEventListener('DOMContentLoaded', createWebsiteButtons);
+    </script>
+</body>
+</html>
