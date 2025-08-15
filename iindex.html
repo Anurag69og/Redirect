@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Arun's Web Navigator — 70 Links</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --text: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Inter, system-ui, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 22px;
+    /* fun but clean cursor */
+    cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur109.cur'), auto;
+  }
+  h1 {
+    margin: 6px 0 8px;
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  p.sub {
+    margin: 0 0 22px;
+    opacity: .8;
+  }
+  .container {
+    width: 100%;
+    max-width: 1120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .site-btn {
+    display: grid;
+    place-items: center;
+    padding: 14px 12px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: #fff;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-weight: 700;
+    letter-spacing: .2px;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease, color .25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(1200px 1200px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.12), transparent 40%);
+    opacity: 0;
+    transition: opacity .25s ease;
+    pointer-events: none;
+  }
+  .site-btn:hover::before { opacity: 1; }
+  .site-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 10px 28px rgba(0,0,0,.35), 0 0 18px rgba(255,255,255,.08) inset;
+    border-color: rgba(255,255,255,.5);
+  }
+
+  /* Brand hovers (biggest platforms) */
+  .youtube:hover{background:#FF0000;}
+  .facebook:hover{background:#1877F2;}
+  .instagram:hover{background:#C13584;}
+  .twitter:hover{background:#1DA1F2;}
+  .snapchat:hover{background:#FFFC00;color:#000;}
+  .reddit:hover{background:#FF4500;}
+  .linkedin:hover{background:#0A66C2;}
+  .whatsapp:hover{background:#25D366;color:#000;}
+  .pinterest:hover{background:#BD081C;}
+  .tiktok:hover{background:#000;}
+  .discord:hover{background:#5865F2;}
+  .spotify:hover{background:#1DB954;}
+  .telegram:hover{background:#0088CC;}
+  .twitch:hover{background:#9146FF;}
+  .github:hover{background:#333;}
+  .notion:hover{background:#121212;}
+  .trello:hover{background:#0079BF;}
+  .asana:hover{background:#5C67EF;}
+  .slack:hover{background:#4A154B;}
+  .teams:hover{background:#6264A7;}
+  .zoom:hover{background:#2D8CFF;}
+  .skype:hover{background:#00AFF0;}
+  .dropbox:hover{background:#0061FF;}
+  .apple:hover{background:#111;}
+  .figma:hover{background:#1E1E1E;}
+  .adobe:hover{background:#FF0000;}
+  .codepen:hover{background:#111;}
+  .jsfiddle:hover{background:#1E90FF;}
+  .kaggle:hover{background:#20BEFF;}
+  .steam:hover{background:#171A21;}
+  .epic:hover{background:#2B2B2B;}
+  .playstation:hover{background:#003791;}
+  .xbox:hover{background:#107C10;}
+  .nintendo:hover{background:#E60012;}
+  .imdb:hover{background:#F5C518;color:#000;}
+  .rottentomatoes:hover{background:#FA320A;}
+  .nyt:hover{background:#000;}
+  .bbc:hover{background:#000;}
+  .yahoo:hover{background:#6001D2;}
+  .techcrunch:hover{background:#0F9D58;}
+  .theverge:hover{background:#E65CFF;}
+
+  @media (max-width: 520px){
+    .container{grid-template-columns: repeat(auto-fit, minmax(140px,1fr));}
+  }
+</style>
+</head>
+<body>
+
+  <h1>Arun's Web Navigator</h1>
+  <p class="sub">70 quick-launch links • Gen-Z glow with a professional layout</p>
+
+  <div class="container" id="grid">
+    <!-- 1–10 -->
+    <a class="site-btn youtube" href="https://www.youtube.com" target="_blank" rel="noopener">YouTube</a>
+    <a class="site-btn facebook" href="https://www.facebook.com" target="_blank" rel="noopener">Facebook</a>
+    <a class="site-btn instagram" href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a>
+    <a class="site-btn twitter" href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a>
+    <a class="site-btn snapchat" href="https://www.snapchat.com" target="_blank" rel="noopener">Snapchat</a>
+    <a class="site-btn reddit" href="https://www.reddit.com" target="_blank" rel="noopener">Reddit</a>
+    <a class="site-btn linkedin" href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="site-btn whatsapp" href="https://www.whatsapp.com" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="site-btn pinterest" href="https://www.pinterest.com" target="_blank" rel="noopener">Pinterest</a>
+    <a class="site-btn tiktok" href="https://www.tiktok.com" target="_blank" rel="noopener">TikTok</a>
+
+    <!-- 11–20 -->
+    <a class="site-btn discord" href="https://discord.com" target="_blank" rel="noopener">Discord</a>
+    <a class="site-btn spotify" href="https://open.spotify.com" target="_blank" rel="noopener">Spotify</a>
+    <a class="site-btn telegram" href="https://telegram.org" target="_blank" rel="noopener">Telegram</a>
+    <a class="site-btn twitch" href="https://www.twitch.tv" target="_blank" rel="noopener">Twitch</a>
+    <a class="site-btn" href="https://medium.com" target="_blank" rel="noopener">Medium</a>
+    <a class="site-btn" href="https://www.quora.com" target="_blank" rel="noopener">Quora</a>
+    <a class="site-btn github" href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+    <a class="site-btn dribbble" href="https://dribbble.com" target="_blank" rel="noopener">Dribbble</a>
+    <a class="site-btn behance" href="https://www.behance.net" target="_blank" rel="noopener">Behance</a>
+    <a class="site-btn" href="https://www.netflix.com" target="_blank" rel="noopener">Netflix</a>
+
+    <!-- 21–30 -->
+    <a class="site-btn" href="https://www.amazon.com" target="_blank" rel="noopener">Amazon</a>
+    <a class="site-btn" href="https://www.ebay.com" target="_blank" rel="noopener">eBay</a>
+    <a class="site-btn" href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a>
+    <a class="site-btn" href="https://www.google.com" target="_blank" rel="noopener">Google</a>
+    <a class="site-btn" href="https://mail.google.com" target="_blank" rel="noopener">Gmail</a>
+    <a class="site-btn" href="https://drive.google.com" target="_blank" rel="noopener">Google Drive</a>
+    <a class="site-btn" href="https://maps.google.com" target="_blank" rel="noopener">Google Maps</a>
+    <a class="site-btn" href="https://photos.google.com" target="_blank" rel="noopener">Google Photos</a>
+    <a class="site-btn" href="https://stackoverflow.com" target="_blank" rel="noopener">Stack Overflow</a>
+    <a class="site-btn" href="https://gitlab.com" target="_blank" rel="noopener">GitLab</a>
+
+    <!-- 31–40 -->
+    <a class="site-btn" href="https://bitbucket.org" target="_blank" rel="noopener">Bitbucket</a>
+    <a class="site-btn" href="https://news.ycombinator.com" target="_blank" rel="noopener">Hacker News</a>
+    <a class="site-btn" href="https://www.producthunt.com" target="_blank" rel="noopener">Product Hunt</a>
+    <a class="site-btn notion" href="https://www.notion.so" target="_blank" rel="noopener">Notion</a>
+    <a class="site-btn trello" href="https://trello.com" target="_blank" rel="noopener">Trello</a>
+    <a class="site-btn asana" href="https://asana.com" target="_blank" rel="noopener">Asana</a>
+    <a class="site-btn slack" href="https://slack.com" target="_blank" rel="noopener">Slack</a>
+    <a class="site-btn teams" href="https://www.microsoft.com/microsoft-teams" target="_blank" rel="noopener">Microsoft Teams</a>
+    <a class="site-btn" href="https://www.microsoft.com/microsoft-365" target="_blank" rel="noopener">Microsoft 365</a>
+    <a class="site-btn" href="https://onedrive.live.com" target="_blank" rel="noopener">OneDrive</a>
+
+    <!-- 41–50 -->
+    <a class="site-btn" href="https://outlook.live.com" target="_blank" rel="noopener">Outlook</a>
+    <a class="site-btn zoom" href="https://zoom.us" target="_blank" rel="noopener">Zoom</a>
+    <a class="site-btn skype" href="https://www.skype.com" target="_blank" rel="noopener">Skype</a>
+    <a class="site-btn dropbox" href="https://www.dropbox.com" target="_blank" rel="noopener">Dropbox</a>
+    <a class="site-btn apple" href="https://www.apple.com" target="_blank" rel="noopener">Apple</a>
+    <a class="site-btn" href="https://www.icloud.com" target="_blank" rel="noopener">iCloud</a>
+    <a class="site-btn" href="https://soundcloud.com" target="_blank" rel="noopener">SoundCloud</a>
+    <a class="site-btn" href="https://vimeo.com" target="_blank" rel="noopener">Vimeo</a>
+    <a class="site-btn" href="https://www.coursera.org" target="_blank" rel="noopener">Coursera</a>
+    <a class="site-btn" href="https://www.udemy.com" target="_blank" rel="noopener">Udemy</a>
+
+    <!-- 51–60 -->
+    <a class="site-btn" href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy</a>
+    <a class="site-btn" href="https://www.duolingo.com" target="_blank" rel="noopener">Duolingo</a>
+    <a class="site-btn" href="https://www.canva.com" target="_blank" rel="noopener">Canva</a>
+    <a class="site-btn figma" href="https://www.figma.com" target="_blank" rel="noopener">Figma</a>
+    <a class="site-btn adobe" href="https://www.adobe.com" target="_blank" rel="noopener">Adobe</a>
+    <a class="site-btn codepen" href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>
+    <a class="site-btn jsfiddle" href="https://jsfiddle.net" target="_blank" rel="noopener">JSFiddle</a>
+    <a class="site-btn kaggle" href="https://www.kaggle.com" target="_blank" rel="noopener">Kaggle</a>
+    <a class="site-btn steam" href="https://store.steampowered.com" target="_blank" rel="noopener">Steam</a>
+    <a class="site-btn epic" href="https://www.epicgames.com/store" target="_blank" rel="noopener">Epic Games</a>
+
+    <!-- 61–70 -->
+    <a class="site-btn playstation" href="https://www.playstation.com" target="_blank" rel="noopener">PlayStation</a>
+    <a class="site-btn xbox" href="https://www.xbox.com" target="_blank" rel="noopener">Xbox</a>
+    <a class="site-btn nintendo" href="https://www.nintendo.com" target="_blank" rel="noopener">Nintendo</a>
+    <a class="site-btn imdb" href="https://www.imdb.com" target="_blank" rel="noopener">IMDb</a>
+    <a class="site-btn rottentomatoes" href="https://www.rottentomatoes.com" target="_blank" rel="noopener">Rotten Tomatoes</a>
+    <a class="site-btn nyt" href="https://www.nytimes.com" target="_blank" rel="noopener">NYTimes</a>
+    <a class="site-btn bbc" href="https://www.bbc.com" target="_blank" rel="noopener">BBC</a>
+    <a class="site-btn yahoo" href="https://www.yahoo.com" target="_blank" rel="noopener">Yahoo</a>
+    <a class="site-btn theverge" href="https://www.theverge.com" target="_blank" rel="noopener">The Verge</a>
+    <a class="site-btn techcrunch" href="https://techcrunch.com" target="_blank" rel="noopener">TechCrunch</a>
+  </div>
+
+  <script>
+    // Pointer-follow shimmer position
+    document.getElementById('grid').addEventListener('pointermove', (e) => {
+      const t = e.target.closest('.site-btn');
+      if(!t) return;
+      const rect = t.getBoundingClientRect();
+      t.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      t.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    });
+  </script>
+
+</body>
+</html>
