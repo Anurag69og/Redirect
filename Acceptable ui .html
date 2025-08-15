@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arun's Web Navigator - Dynamic Theme</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for background and button effects */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF; /* Default solid white background */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden; /* Prevent scrollbar from background */
+            transition: background-color 0.5s ease; /* Smooth transition for background color change */
+        }
+
+        /* Container for the app to add some padding and centering */
+        .app-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            backdrop-filter: blur(12px); /* Stronger blur for frosted glass effect */
+            border-radius: 24px; /* More rounded corners */
+            padding: 40px; /* More padding */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+            text-align: center;
+            max-width: 960px; /* Slightly wider */
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Slightly larger buttons */
+            gap: 20px; /* Slightly increased gap */
+            margin-top: 40px; /* More space from title */
+            width: 100%; /* Ensure grid takes full width of container */
+        }
+
+        /* Initial load animation for buttons */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Specific button styling with hover and active effects */
+        .website-button {
+            display: flex; /* Use flexbox for logo and text alignment */
+            flex-direction: column; /* Stack logo above text */
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            padding: 16px 10px; /* More padding */
+            border-radius: 16px; /* Even more rounded corners */
+            font-weight: 600; /* Bolder text */
+            font-size: 1.05em; /* Slightly larger text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Soft professional shadow */
+            border: none; /* No explicit border for solid look */
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            min-height: 100px; /* Ensure consistent button height */
+            opacity: 0; /* Start hidden for animation */
+            animation: fadeInSlideUp 0.5s ease-out forwards; /* Apply animation, delay set in JS */
+        }
+
+        .website-button .logo-img {
+            width: 40px; /* Size of image logo */
+            height: 40px; /* Size of image logo */
+            margin-bottom: 8px; /* Space between logo and text */
+            object-fit: contain; /* Ensure logo scales properly without cropping */
+            transition: transform 0.2s ease; /* Smooth transition for logo scale */
+        }
+        
+        .website-button .text {
+            font-weight: 600; /* Bolder text */
+            font-size: 0.9em; /* Adjusted text size */
+            color: #FFFFFF; /* Solid white text for readability */
+        }
+
+        .website-button:hover {
+            transform: translateY(-6px) scale(1.03); /* More pronounced lift and enlarge */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Even deeper shadow on hover */
+            filter: brightness(1.15); /* More noticeable brightness on hover */
+        }
+
+        .website-button:hover .logo-img {
+            transform: scale(1.1); /* Slightly enlarge logo on hover */
+        }
+
+        .website-button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            filter: brightness(0.9); /* Slightly darker on active */
+        }
+
+        /* Ripple effect for buttons */
+        .website-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.8); /* Brighter ripple */
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0) translate(-50%, -50%);
+            transition: width 0.5s ease-out, height 0.5s ease-out, opacity 0.5s ease-out;
+            pointer-events: none; /* Ensure clicks pass through ripple */
+        }
+
+        .website-button:active::after {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+            transition: 0s;
+        }
+
+        /* Text color for header and paragraph - dynamically set */
+        .app-container h1, .app-container p {
+            transition: color 0.5s ease; /* Smooth transition for text color */
+        }
+
+        /* Theme control styling */
+        .theme-control-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: rgba(255, 255, 255, 0.1); /* Subtle background for controls */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .theme-button {
+            background-color: #555; /* Default gray for theme buttons */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 500;
+        }
+
+        .theme-button:hover {
+            background-color: #777;
+            transform: translateY(-2px);
+        }
+
+        .theme-button:active {
+            transform: translateY(0);
+        }
+
+        #backgroundColorPicker {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 80px; /* Adjust size of the color input */
+            height: 40px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px; /* Rounded corners for the picker */
+            overflow: hidden; /* Hide default border */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            display: none; /* Hidden by default */
+        }
+
+        #backgroundColorPicker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        #backgroundColorPicker::-webkit-color-swatch {
+            border: none;
+            border-radius: 8px; /* Match outer border-radius */
+        }
+
+        #backgroundColorPicker::-moz-color-swatch {
+            border: none;
+            border-radius: 8px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 25px;
+                border-radius: 16px;
+            }
+            .button-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 15px;
+            }
+            .website-button {
+                padding: 12px 8px;
+                min-height: 90px;
+                font-size: 0.95em;
+                border-radius: 12px;
+            }
+            .website-button .logo-img {
+                width: 35px;
+                height: 35px;
+                margin-bottom: 4px;
+            }
+            .website-button .text {
+                font-size: 0.8em;
+            }
+            .theme-control-container {
+                margin-top: 20px;
+                padding: 15px;
+            }
+            .theme-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1 class="text-3xl md:text-4xl font-bold mb-6 drop-shadow-sm" id="mainHeading">Arun's Web Navigator</h1>
+        <p class="text-lg text-opacity-80 mb-8" id="mainParagraph">Click any platform to launch it in a new tab.</p>
+
+        <div class="button-grid" id="websiteButtonGrid">
+            <!-- Buttons will be dynamically loaded here by JavaScript -->
+        </div>
+
+        <div class="theme-control-container">
+            <div class="theme-buttons">
+                <button class="theme-button" id="lightThemeBtn">Light Theme</button>
+                <button class="theme-button" id="darkThemeBtn">Dark Theme</button>
+                <button class="theme-button" id="customColorBtn">Custom Color</button>
+            </div>
+            <input type="color" id="backgroundColorPicker" value="#FFFFFF">
+        </div>
+    </div>
+
+    <script>
+        // Data for website buttons with vibrant colors and image logos
+        const websiteData = {
+            youtube: { title: "YouTube", url: "https://www.youtube.com/", color: "#FF0000", icon: "https://catbox.moe/youtube_logo.png" },
+            facebook: { title: "Facebook", url: "https://www.facebook.com/", color: "#1877F2", icon: "https://catbox.moe/facebook_logo.png" },
+            instagram: { title: "Instagram", url: "https://www.instagram.com/", color: "#E1306C", icon: "https://catbox.moe/instagram_logo.png" },
+            x: { title: "X (Twitter)", url: "https://x.com/", color: "#1DA1F2", icon: "https://catbox.moe/x_logo.png" },
+            linkedin: { title: "LinkedIn", url: "https://www.linkedin.com/", color: "#0A66C2", icon: "https://catbox.moe/linkedin_logo.png" },
+            tiktok: { title: "TikTok", url: "https://www.tiktok.com/", color: "#000000", icon: "https://catbox.moe/tiktok_logo.png" },
+            pinterest: { title: "Pinterest", url: "https://www.pinterest.com/", color: "#E60023", icon: "https://catbox.moe/pinterest_logo.png" },
+            snapchat: { title: "Snapchat", url: "https://www.snapchat.com/", color: "#FFFC00", icon: "https://catbox.moe/snapchat_logo.png" },
+            zoom: { title: "Zoom", url: "https://zoom.us/", color: "#2D8CFF", icon: "https://catbox.moe/zoom_logo.png" },
+            whatsapp: { title: "WhatsApp", url: "https://www.whatsapp.com/", color: "#25D366", icon: "https://catbox.moe/whatsapp_logo.png" },
+            telegram: { title: "Telegram", url: "https://telegram.org/", color: "#0088CC", icon: "https://catbox.moe/telegram_logo.png" },
+            discord: { title: "Discord", url: "https://discord.com/", color: "#5865F2", icon: "https://catbox.moe/discord_logo.png" },
+            twitch: { title: "Twitch", url: "https://www.twitch.tv/", color: "#9146FF", icon: "https://catbox.moe/twitch_logo.png" },
+            netflix: { title: "Netflix", url: "https://www.netflix.com/", color: "#E50914", icon: "https://catbox.moe/netflix_logo.png" },
+            spotify: { title: "Spotify", url: "https://www.spotify.com/", color: "#1DB954", icon: "https://catbox.moe/spotify_logo.png" },
+            amazon: { title: "Amazon", url: "https://www.amazon.com/", color: "#FF9900", icon: "https://catbox.moe/amazon_logo.png" },
+            ebay: { title: "eBay", url: "https://www.ebay.com/", color: "#E53238", icon: "https://catbox.moe/ebay_logo.png" },
+            wikipedia: { title: "Wikipedia", url: "https://www.wikipedia.org/", color: "#F8F9FA", icon: "https://catbox.moe/wikipedia_logo.png" },
+            google: { title: "Google", url: "https://www.google.com/", color: "#4285F4", icon: "https://catbox.moe/google_logo.png" },
+            gmail: { title: "Gmail", url: "https://mail.google.com/", color: "#EA4335", icon: "https://catbox.moe/gmail_logo.png" },
+            googledrive: { title: "Drive", url: "https://drive.google.com/", color: "#4285F4", icon: "https://catbox.moe/googledrive_logo.png" },
+            microsoftteams: { title: "MS Teams", url: "https://www.microsoft.com/en-us/microsoft-teams/", color: "#6264A7", icon: "https://catbox.moe/microsoftteams_logo.png" },
+            slack: { title: "Slack", url: "https://slack.com/", color: "#4A154B", icon: "https://catbox.moe/slack_logo.png" },
+            github: { title: "GitHub", url: "https://github.com/", color: "#181717", icon: "https://catbox.moe/github_logo.png" },
+            stackoverflow: { title: "Stack Overflow", url: "https://stackoverflow.com/", color: "#F48024", icon: "https://catbox.moe/stackoverflow_logo.png" },
+            medium: { title: "Medium", url: "https://medium.com/", color: "#02B875", icon: "https://catbox.moe/medium_logo.png" },
+            quora: { title: "Quora", url: "https://www.quora.com/", color: "#B92B27", icon: "https://catbox.moe/quora_logo.png" },
+            canva: { title: "Canva", url: "https://www.canva.com/", color: "#00C4CC", icon: "https://catbox.moe/canva_logo.png" },
+            shopify: { title: "Shopify", url: "https://www.shopify.com/", color: "#96BF48", icon: "https://catbox.moe/shopify_logo.png" },
+            etsy: { title: "Etsy", url: "https://www.etsy.com/", color: "#F56400", icon: "https://catbox.moe/etsy_logo.png" },
+            asana: { title: "Asana", url: "https://asana.com/", color: "#5C67EF", icon: "https://catbox.moe/asana_logo.png" },
+            trello: { title: "Trello", url: "https://trello.com/", color: "#0079BF", icon: "https://catbox.moe/trello_logo.png" },
+            evernote: { title: "Evernote", url: "https://evernote.com/", color: "#2DB661", icon: "https://catbox.moe/evernote_logo.png" },
+            vimeo: { title: "Vimeo", url: "https://vimeo.com/", color: "#1AB7EA", icon: "https://catbox.moe/vimeo_logo.png" },
+            soundcloud: { title: "SoundCloud", url: "https://soundcloud.com/", color: "#FF8800", icon: "https://catbox.moe/soundcloud_logo.png" },
+            duolingo: { title: "Duolingo", url: "https://www.duolingo.com/", color: "#58CC02", icon: "https://catbox.moe/duolingo_logo.png" },
+            coursera: { title: "Coursera", url: "https://www.coursera.org/", color: "#2A73CC", icon: "https://catbox.moe/coursera_logo.png" },
+            udemy: { title: "Udemy", url: "https://www.udemy.com/", color: "#EC5252", icon: "https://catbox.moe/udemy_logo.png" }
+        };
+
+        // Get DOM elements
+        const websiteButtonGrid = document.getElementById('websiteButtonGrid');
+        const backgroundColorPicker = document.getElementById('backgroundColorPicker');
+        const lightThemeBtn = document.getElementById('lightThemeBtn');
+        const darkThemeBtn = document.getElementById('darkThemeBtn');
+        const customColorBtn = document.getElementById('customColorBtn');
+        const mainHeading = document.getElementById('mainHeading');
+        const mainParagraph = document.getElementById('mainParagraph');
+        const appContainer = document.querySelector('.app-container');
+
+
+        // Function to update main text colors based on background luminance
+        function updateAppThemeColors(bgColor) {
+            const r = parseInt(bgColor.slice(1, 3), 16);
+            const g = parseInt(bgColor.slice(3, 5), 16);
+            const b = parseInt(bgColor.slice(5, 7), 16);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            if (luminance > 0.5) {
+                // Light background, use dark text
+                mainHeading.style.color = '#333333';
+                mainParagraph.style.color = 'rgba(51, 51, 51, 0.8)';
+                appContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                appContainer.style.borderColor = 'rgba(0, 0, 0, 0.05)';
+            } else {
+                // Dark background, use light text
+                mainHeading.style.color = '#E0E0E0';
+                mainParagraph.style.color = 'rgba(224, 224, 224, 0.8)';
+                appContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                appContainer.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            }
+        }
+
+        // Dynamically create buttons based on websiteData
+        function createWebsiteButtons() {
+            for (let i = 0; i < Object.keys(websiteData).length; i++) {
+                const key = Object.keys(websiteData)[i];
+                const button = document.createElement('button');
+                button.classList.add('website-button');
+                
+                // Set animation delay for staggered effect
+                button.style.animationDelay = `${i * 0.05}s`;
+
+                // Create image element for the logo
+                const logoImg = document.createElement('img');
+                logoImg.classList.add('logo-img');
+                // IMPORTANT: Replace these with your actual catbox.moe image URLs
+                logoImg.src = websiteData[key].icon;
+                logoImg.alt = `${websiteData[key].title} Logo`; // Alt text for accessibility
+                // Fallback for image loading errors
+                logoImg.onerror = function() {
+                    this.onerror=null; // Prevent infinite loop
+                    this.src='https://placehold.co/40x40/CCCCCC/666666?text=Logo'; // Generic placeholder
+                };
+                button.appendChild(logoImg);
+
+                // Create text span
+                const textSpan = document.createElement('span');
+                textSpan.classList.add('text');
+                textSpan.textContent = websiteData[key].title;
+                button.appendChild(textSpan);
+                
+                // Apply unique vibrant color to each button for background
+                const primaryColor = websiteData[key].color;
+                const lighterColor = adjustBrightness(primaryColor, 1.1); // Slightly lighter for gradient start
+                const darkerColor = adjustBrightness(primaryColor, 0.9);  // Slightly darker for gradient end
+                button.style.background = `linear-gradient(145deg, ${lighterColor}, ${darkerColor})`;
+                textSpan.style.color = getContrastTextColor(primaryColor); // Set solid text color
+
+                // Direct redirection on click
+                button.addEventListener('click', () => {
+                    window.open(websiteData[key].url, '_blank'); // Open URL in a new tab
+                });
+                websiteButtonGrid.appendChild(button);
+            }
+        }
+
+        // Helper function to adjust color brightness
+        function adjustBrightness(hex, factor) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+
+            const newR = Math.min(255, Math.max(0, Math.round(r * factor)));
+            const newG = Math.min(255, Math.max(0, Math.round(g * factor)));
+            const newB = Math.min(255, Math.max(0, Math.round(b * factor)));
+
+            return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+        }
+
+        // Helper function to get contrasting text color (white or dark gray)
+        function getContrastTextColor(hexColor) {
+            // Convert hex to RGB
+            const r = parseInt(hexColor.slice(1, 3), 16);
+            const g = parseInt(hexColor.slice(3, 5), 16);
+            const b = parseInt(hexColor.slice(5, 7), 16);
+
+            // Calculate luminance (perceived brightness)
+            // Formula: (0.299*R + 0.587*G + 0.114*B) / 255
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            // Use white text for dark colors, a dark gray for light colors
+            return luminance > 0.5 ? '#333333' : '#FFFFFF';
+        }
+
+        // Event listeners for theme buttons
+        lightThemeBtn.addEventListener('click', () => {
+            document.body.style.backgroundColor = '#FFFFFF';
+            backgroundColorPicker.value = '#FFFFFF'; // Sync picker
+            updateAppThemeColors('#FFFFFF');
+        });
+
+        darkThemeBtn.addEventListener('click', () => {
+            document.body.style.backgroundColor = '#1a1a1a';
+            backgroundColorPicker.value = '#1a1a1a'; // Sync picker
+            updateAppThemeColors('#1a1a1a');
+        });
+
+        customColorBtn.addEventListener('click', () => {
+            backgroundColorPicker.style.display = 'block'; // Show the color picker
+            // Optionally set the picker to the current body color if it's not already synced
+            backgroundColorPicker.value = document.body.style.backgroundColor || '#FFFFFF';
+        });
+
+        // Event listener for the color picker (when custom is active)
+        backgroundColorPicker.addEventListener('input', (event) => {
+            document.body.style.backgroundColor = event.target.value;
+            updateAppThemeColors(event.target.value);
+        });
+
+        // Initialize buttons and set initial theme colors on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            createWebsiteButtons();
+            // Set initial text colors based on default white background
+            updateAppThemeColors(document.body.style.backgroundColor);
+        });
+    </script>
+</body>
+</html>
