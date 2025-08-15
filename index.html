@@ -6,13 +6,13 @@
 <title>Popular Sites</title>
 <style>
     body {
-        margin: 10;
+        margin: 10px;
         font-family: 'Segoe UI', sans-serif;
         background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
         color: white;
         display: flex;
         justify-content: center;
-        align-items: normal;
+        align-items: flex-start;
         min-height: 95vh;
     }
 
@@ -20,8 +20,32 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
         gap: 20px;
-        max-width: stretch;
+        max-width: 100%;
         padding: 70px;
+    }
+
+    .corner-mobile {
+        position: fixed;
+        top: 10px;
+        right: 50px;
+        width: 50px;
+        height: 50px;
+        background: transparent;
+        border: 2px solid #000;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 14px;
+        text-align: center;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .corner-mobile:hover {
+        background: rgba(255, 255, 255, 0.1);
     }
 
     .site-btn {
@@ -100,10 +124,15 @@
     .dropbox { background: #0061FF; }
     .gdrive { background: #0F9D58; }
     .onedrive { background: #094AB2; }
+    .mobile { background: #609f9d; }
 </style>
 </head>
 <body>
 
+<!-- Fixed top-right button -->
+<a href="/Mobile.html" class="corner-mobile mobile" target="_blank">Mobile</a>
+
+<!-- Site Buttons Grid -->
 <div class="container">
     <a href="https://www.youtube.com" class="site-btn youtube" target="_blank">YouTube</a>
     <a href="https://www.facebook.com" class="site-btn facebook" target="_blank">Facebook</a>
