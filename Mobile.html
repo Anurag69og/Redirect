@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popular Sites</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .site-btn {
+        padding: 15px;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 16px;
+        text-decoration: none;
+        color: white;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        font-weight: bold;
+        display: block;
+    }
+
+    .site-btn:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0px 6px 15px rgba(0,0,0,0.5);
+    }
+
+    .site-btn:active {
+        transform: scale(1.1);
+    }
+
+    .site-btn::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 100%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        transform: rotate(45deg);
+        transition: 0.5s;
+    }
+
+    .site-btn:hover::before {
+        left: 100%;
+    }
+
+    /* Brand colors */
+    .youtube { background: #FF0000; }
+    .facebook { background: #1877F2; }
+    .instagram { background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); }
+    .twitter { background: #1DA1F2; }
+    .reddit { background: #FF4500; }
+    .linkedin { background: #0A66C2; }
+    .snapchat { background: #FFFC00; color: black; }
+    .whatsapp { background: #25D366; }
+    .pinterest { background: #BD081C; }
+    .tiktok { background: #000000; }
+    .github { background: #24292E; }
+    .stackoverflow { background: #F48024; }
+    .netflix { background: #E50914; }
+    .spotify { background: #1DB954; }
+    .amazon { background: #FF9900; }
+    .flipkart { background: #2874F0; }
+    .apple { background: #A3AAAE; color: black; }
+    .microsoft { background: #00A4EF; }
+    .google { background: #4285F4; }
+    .gmail { background: #D93025; }
+    .wikipedia { background: #636466; }
+    .bing { background: #008373; }
+    .yahoo { background: #6001D2; }
+    .quora { background: #B92B27; }
+    .medium { background: #00AB6C; }
+    .deviantart { background: #05CC47; }
+    .flickr { background: linear-gradient(90deg, #FF0084, #0063DC); }
+    .vimeo { background: #1AB7EA; }
+    .soundcloud { background: linear-gradient(90deg, #FF3300, #FF7700); }
+    .tumblr { background: #36465D; }
+    .slack { background: #4A154B; }
+    .discord { background: #5865F2; }
+    .paypal { background: #003087; }
+    .dropbox { background: #0061FF; }
+    .gdrive { background: #0F9D58; }
+    .onedrive { background: #094AB2; }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+        .container {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            padding: 15px;
+        }
+        .site-btn {
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 40px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            grid-template-columns: 1fr;
+            padding: 10px;
+        }
+        .site-btn {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 30px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <a href="https://www.youtube.com" class="site-btn youtube" target="_blank">YouTube</a>
+    <a href="https://www.facebook.com" class="site-btn facebook" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com" class="site-btn instagram" target="_blank">Instagram</a>
+    <a href="https://twitter.com" class="site-btn twitter" target="_blank">Twitter</a>
+    <a href="https://www.reddit.com" class="site-btn reddit" target="_blank">Reddit</a>
+    <a href="https://www.linkedin.com" class="site-btn linkedin" target="_blank">LinkedIn</a>
+    <a href="https://www.snapchat.com" class="site-btn snapchat" target="_blank">Snapchat</a>
+    <a href="https://www.whatsapp.com" class="site-btn whatsapp" target="_blank">WhatsApp</a>
+    <a href="https://www.pinterest.com" class="site-btn pinterest" target="_blank">Pinterest</a>
+    <a href="https://www.tiktok.com" class="site-btn tiktok" target="_blank">TikTok</a>
+    <a href="https://www.github.com" class="site-btn github" target="_blank">GitHub</a>
+    <a href="https://www.stackoverflow.com" class="site-btn stackoverflow" target="_blank">StackOverflow</a>
+    <a href="https://www.netflix.com" class="site-btn netflix" target="_blank">Netflix</a>
+    <a href="https://www.spotify.com" class="site-btn spotify" target="_blank">Spotify</a>
+    <a href="https://www.amazon.com" class="site-btn amazon" target="_blank">Amazon</a>
+    <a href="https://www.flipkart.com" class="site-btn flipkart" target="_blank">Flipkart</a>
+    <a href="https://www.apple.com" class="site-btn apple" target="_blank">Apple</a>
+    <a href="https://www.microsoft.com" class="site-btn microsoft" target="_blank">Microsoft</a>
+    <a href="https://www.google.com" class="site-btn google" target="_blank">Google</a>
+    <a href="https://mail.google.com" class="site-btn gmail" target="_blank">Gmail</a>
+    <a href="https://www.wikipedia.org" class="site-btn wikipedia" target="_blank">Wikipedia</a>
+    <a href="https://www.bing.com" class="site-btn bing" target="_blank">Bing</a>
+    <a href="https://www.yahoo.com" class="site-btn yahoo" target="_blank">Yahoo</a>
+    <a href="https://www.quora.com" class="site-btn quora" target="_blank">Quora</a>
+    <a href="https://www.medium.com" class="site-btn medium" target="_blank">Medium</a>
+    <a href="https://www.deviantart.com" class="site-btn deviantart" target="_blank">DeviantArt</a>
+    <a href="https://www.flickr.com" class="site-btn flickr" target="_blank">Flickr</a>
+    <a href="https://www.vimeo.com" class="site-btn vimeo" target="_blank">Vimeo</a>
+    <a href="https://www.soundcloud.com" class="site-btn soundcloud" target="_blank">SoundCloud</a>
+    <a href="https://www.tumblr.com" class="site-btn tumblr" target="_blank">Tumblr</a>
+    <a href="https://www.slack.com" class="site-btn slack" target="_blank">Slack</a>
+    <a href="https://discord.com" class="site-btn discord" target="_blank">Discord</a>
+    <a href="https://www.paypal.com" class="site-btn paypal" target="_blank">PayPal</a>
+    <a href="https://www.dropbox.com" class="site-btn dropbox" target="_blank">Dropbox</a>
+    <a href="https://drive.google.com" class="site-btn gdrive" target="_blank">Google Drive</a>
+    <a href="https://onedrive.live.com" class="site-btn onedrive" target="_blank">OneDrive</a>
+</div>
+
+</body>
+</html>
