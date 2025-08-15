@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arun's Web Navigator</title>
+<style>
+    :root {
+        --bg-light: #f5f5f5;
+        --bg-dark: #121826; 
+        --bg-dark-alt: #1a2333;
+        --text-light: #222;
+        --text-dark: #f5f5f5;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: var(--bg-light);
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        transition: background 0.3s, color 0.3s;
+        cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur109.cur'), auto;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .theme-toggle {
+        margin-bottom: 20px;
+        padding: 8px 16px;
+        border: 1px solid;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 4px;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 20px;
+        max-width: 1100px;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .site-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+        border: 2px solid currentColor;
+        background-color: transparent;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        font-weight: 500;
+        text-transform: capitalize;
+        transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .site-btn:hover {
+        background-color: var(--brand);
+        color: white;
+        border-color: var(--brand);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Light mode brand colors */
+    .youtube   { color: #d32f2f; --brand: #d32f2f; }
+    .facebook  { color: #1877f2; --brand: #1877f2; }
+    .instagram { color: #c13584; --brand: #c13584; }
+    .twitter   { color: #1da1f2; --brand: #1da1f2; }
+    .snapchat  { color: #f4d03f; --brand: #f4d03f; }
+    .reddit    { color: #ff4500; --brand: #ff4500; }
+    .linkedin  { color: #0077b5; --brand: #0077b5; }
+    .whatsapp  { color: #25d366; --brand: #25d366; }
+    .pinterest { color: #bd081c; --brand: #bd081c; }
+    .tiktok    { color: #333333; --brand: #333333; }
+    .telegram  { color: #229ed9; --brand: #229ed9; }
+    .discord   { color: #5865f2; --brand: #5865f2; }
+    .spotify   { color: #1db954; --brand: #1db954; }
+    .netflix   { color: #e50914; --brand: #e50914; }
+    .amazon    { color: #ff9900; --brand: #ff9900; }
+    .ebay      { color: #86b817; --brand: #86b817; }
+    .quora     { color: #b92b27; --brand: #b92b27; }
+    .tumblr    { color: #35465c; --brand: #35465c; }
+    .vimeo     { color: #1ab7ea; --brand: #1ab7ea; }
+    .flickr    { color: #ff0084; --brand: #ff0084; }
+    .dribbble  { color: #ea4c89; --brand: #ea4c89; }
+    .behance   { color: #1769ff; --brand: #1769ff; }
+    .github    { color: #24292f; --brand: #24292f; }
+    .gitlab    { color: #fc6d26; --brand: #fc6d26; }
+    .bitbucket { color: #0052cc; --brand: #0052cc; }
+    .stackof   { color: #f48024; --brand: #f48024; }
+    .wordpress { color: #21759b; --brand: #21759b; }
+    .medium    { color: #00ab6c; --brand: #00ab6c; }
+    .twitch    { color: #9146ff; --brand: #9146ff; }
+    .snapseed  { color: #77c159; --brand: #77c159; }
+    .canva     { color: #00c4cc; --brand: #00c4cc; }
+    .zoom      { color: #2d8cff; --brand: #2d8cff; }
+    .skype     { color: #00aff0; --brand: #00aff0; }
+    .yahoo     { color: #6001d2; --brand: #6001d2; }
+    .apple     { color: #555555; --brand: #555555; }
+    .microsoft { color: #f65314; --brand: #f65314; }
+    .dropbox   { color: #0061ff; --brand: #0061ff; }
+    .slack     { color: #4a154b; --brand: #4a154b; }
+    .evernote  { color: #00a82d; --brand: #00a82d; }
+    .trello    { color: #0079bf; --brand: #0079bf; }
+    .notion    { color: #000000; --brand: #000000; }
+    .airbnb    { color: #ff5a5f; --brand: #ff5a5f; }
+    .booking   { color: #003580; --brand: #003580; }
+    .trip      { color: #007fad; --brand: #007fad; }
+    .ola       { color: #d6de23; --brand: #d6de23; }
+    .uber      { color: #000000; --brand: #000000; }
+    .zomato    { color: #cb202d; --brand: #cb202d; }
+    .swiggy    { color: #fc8019; --brand: #fc8019; }
+    .blinkit   { color: #ffe033; --brand: #ffe033; }
+    .flipkart  { color: #2874f0; --brand: #2874f0; }
+    .myntra    { color: #ff3f6c; --brand: #ff3f6c; }
+    .ajio      { color: #2c4152; --brand: #2c4152; }
+    .snapdeal  { color: #e40046; --brand: #e40046; }
+    .shopify   { color: #96bf48; --brand: #96bf48; }
+    .paypal    { color: #003087; --brand: #003087; }
+    .phonepe   { color: #5f259f; --brand: #5f259f; }
+    .gpay      { color: #4285f4; --brand: #4285f4; }
+    .paytm     { color: #00baf2; --brand: #00baf2; }
+    .truecaller{ color: #1da1f2; --brand: #1da1f2; }
+    .hotstar   { color: #141414; --brand: #141414; }
+    .prime     { color: #00a8e1; --brand: #00a8e1; }
+    .sonyliv   { color: #ffb300; --brand: #ffb300; }
+    .zee5      { color: #000000; --brand: #000000; }
+    .voot      { color: #5a2d81; --brand: #5a2d81; }
+    .jio       { color: #d81b60; --brand: #d81b60; }
+    .gaana     { color: #e72c30; --brand: #e72c30; }
+    .wynk      { color: #ff0000; --brand: #ff0000; }
+    .saavn     { color: #00897b; --brand: #00897b; }
+    .soundcloud{ color: #ff7700; --brand: #ff7700; }
+    .bandcamp  { color: #629aa9; --brand: #629aa9; }
+    .deezer    { color: #000000; --brand: #000000; }
+    .applemusic{ color: #fa243c; --brand: #fa243c; }
+
+    body.dark {
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+    }
+    body.dark .theme-toggle {
+        color: var(--text-dark);
+        border-color: var(--text-dark);
+    }
+    body.dark .theme-toggle:hover {
+        background-color: var(--bg-dark-alt);
+    }
+</style>
+</head>
+<body>
+
+<h1>Arun's Web Navigator</h1>
+<button class="theme-toggle" onclick="toggleTheme()">Switch Theme</button>
+
+<div class="container" id="linksContainer"></div>
+
+<script>
+const links = [
+    ["youtube","https://www.youtube.com"],["facebook","https://facebook.com"],
+    ["instagram","https://instagram.com"],["twitter","https://twitter.com"],
+    ["snapchat","https://snapchat.com"],["reddit","https://reddit.com"],
+    ["linkedin","https://linkedin.com"],["whatsapp","https://whatsapp.com"],
+    ["pinterest","https://pinterest.com"],["tiktok","https://tiktok.com"],
+    ["telegram","https://telegram.org"],["discord","https://discord.com"],
+    ["spotify","https://spotify.com"],["netflix","https://netflix.com"],
+    ["amazon","https://amazon.com"],["ebay","https://ebay.com"],
+    ["quora","https://quora.com"],["tumblr","https://tumblr.com"],
+    ["vimeo","https://vimeo.com"],["flickr","https://flickr.com"],
+    ["dribbble","https://dribbble.com"],["behance","https://behance.net"],
+    ["github","https://github.com"],["gitlab","https://gitlab.com"],
+    ["bitbucket","https://bitbucket.org"],["stackof","https://stackoverflow.com"],
+    ["wordpress","https://wordpress.com"],["medium","https://medium.com"],
+    ["twitch","https://twitch.tv"],["snapseed","https://snapseed.online"],
+    ["canva","https://canva.com"],["zoom","https://zoom.us"],
+    ["skype","https://skype.com"],["yahoo","https://yahoo.com"],
+    ["apple","https://apple.com"],["microsoft","https://microsoft.com"],
+    ["dropbox","https://dropbox.com"],["slack","https://slack.com"],
+    ["evernote","https://evernote.com"],["trello","https://trello.com"],
+    ["notion","https://notion.so"],["airbnb","https://airbnb.com"],
+    ["booking","https://booking.com"],["trip","https://trip.com"],
+    ["ola","https://ola.com"],["uber","https://uber.com"],
+    ["zomato","https://zomato.com"],["swiggy","https://swiggy.com"],
+    ["blinkit","https://blinkit.com"],["flipkart","https://flipkart.com"],
+    ["myntra","https://myntra.com"],["ajio","https://ajio.com"],
+    ["snapdeal","https://snapdeal.com"],["shopify","https://shopify.com"],
+    ["paypal","https://paypal.com"],["phonepe","https://phonepe.com"],
+    ["gpay","https://pay.google.com"],["paytm","https://paytm.com"],
+    ["truecaller","https://truecaller.com"],["hotstar","https://hotstar.com"],
+    ["prime","https://primevideo.com"],["sonyliv","https://sonyliv.com"],
+    ["zee5","https://zee5.com"],["voot","https://voot.com"],
+    ["jio","https://www.jio.com"],["gaana","https://gaana.com"],
+    ["wynk","https://wynk.in"],["saavn","https://www.jiosaavn.com"],
+    ["soundcloud","https://soundcloud.com"],["bandcamp","https://bandcamp.com"],
+    ["deezer","https://deezer.com"],["applemusic","https://music.apple.com"]
+];
+
+const container = document.getElementById("linksContainer");
+links.forEach(([cls, url]) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.className = `site-btn ${cls}`;
+    a.textContent = cls.charAt(0).toUpperCase() + cls.slice(1);
+    container.appendChild(a);
+});
+
+function toggleTheme() {
+    document.body.classList.toggle('dark');
+}
+</script>
+</body>
+</html>
